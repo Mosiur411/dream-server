@@ -28,7 +28,7 @@ const userSignup = async (req, res) => {
             password: password,
         })
         if (createAccount?.uid) {
-            const user = await UserModel({ ...req.body, uid: createAccount.uid, role: 'shop' })
+            const user = await UserModel({ ...req.body, uid: createAccount.uid, role: 'admin' })
             await user.save()
             return res.status(200).json({ user })
         }
@@ -116,11 +116,13 @@ const userUpdateAdmin = async (req, res) => {
         const { _id, approved } = req.body;
         const firebaseUser = await checkAuth(_id)
         const info = { approved: approved };
-        let user = await UserModel.updateMany({ _id: _id }, { $set: info }, {
+        let user = await UserModel.findOneAndUpdate({ _id: _id }, { $set: info }, {
             runValidators: true,
         })
         if (user) {
-            await getAuth().setCustomUserClaims(firebaseUser.uid, { ...firebaseUser.customClaims, approved: user.approved, _id: _id })
+            console.log(user)
+            const result = await getAuth().setCustomUserClaims(firebaseUser.uid, { ...firebaseUser.customClaims, approved: user.approved, shop: _id, role: user?.role })
+            console.log(result)
             return res.status(200).json({ user })
         }
     } catch (err) {

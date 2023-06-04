@@ -4,6 +4,7 @@ const { connectDatabase } = require('./config/bd.config')
 const { userRoutes } = require('./routes/user.routes')
 const { initializeFirebase } = require('./config/firebase.config')
 const { employeeRoutes } = require('./routes/employee.router')
+const { userAdminRoutes } = require('./routes/admin/public/user.admin.router')
 
 require('dotenv').config()
 const app = express()
@@ -17,7 +18,11 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-/* route   */
+/* ==============  handel  route  ==============  */
+app.use('/admin', userAdminRoutes)
+
+
+
 
 /* admin handel  */
 app.use('/', userRoutes)

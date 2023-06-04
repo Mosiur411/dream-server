@@ -19,10 +19,6 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
-    shop: {
-        type: String,
-        trim: true,
-    },
     number: {
         type: String,
         trim: true,
@@ -67,8 +63,8 @@ const UserSchema = new mongoose.Schema({
     },
     approved: {
         type: Boolean,
-        required: false,
-        default: false
+        required: true,
+        default: true
     }
 }, { timestamps: true })
 
